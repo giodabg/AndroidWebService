@@ -39,3 +39,5 @@ captures/
 # Keystore files
 *.jks
 /helloWolrdNB/nbproject/private/
+/NB_WSApplicationTestDB/nbproject/private/
+/NB_WSApplicationTestDB/dist/
