@@ -51,6 +51,11 @@ public class CallWebService extends AsyncTask<String, String, String> {
     private static final String PARAMETER_NAME_ADD1 = "num1";
     private static final String PARAMETER_NAME_ADD2 = "num2";
 
+    // nome dell'operazione
+    public final static String METHOD_NAME_SQRT = "radiceQuadrata";
+    // nome dei parametri
+    private static final String PARAMETER_NAME_SQRT1 = "num1";
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -86,6 +91,49 @@ public class CallWebService extends AsyncTask<String, String, String> {
 
             // FORMA SEMPLIFICATA: aggiunta di un parametro con nome PARAMETER_NAME_ADD2 di tipo base
             soapObject.addProperty(PARAMETER_NAME_ADD2, params[2]);
+
+            Log.i("com.example.samplews", "Request Value -> " + soapObject.toString());
+            // creazione della busta SOAP da inviare
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+            // inserimento nella busta dell'oggetto SOAP
+            envelope.setOutputSoapObject(soapObject);
+
+            // creazione della connessione con protocollo HTTP al web service
+            HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
+
+            try {
+                // richiesta di esecuzione dell'operazione SOAP_ACTION ssui dati contenuti nella busta SOAP
+                httpTransportSE.call(SOAP_ACTION, envelope);
+
+                // ricezione della risposta
+                SoapPrimitive soapPrimitive = (SoapPrimitive) envelope.getResponse();
+
+                // FORMA SEMPLIFICATA: estrazione dalla risposta del contenuto
+                str = soapPrimitive.toString();
+
+                Log.i("com.example.samplews", "Risultato -------------- " + str);
+                return str;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (params[0].equals(METHOD_NAME_SQRT)) {
+
+            // impostazione nome esteso dell'operazione
+            String SOAP_ACTION = NAMESPACE + METHOD_NAME_SQRT;
+
+            // creazione dell'oggetto per la comunicazione con il web service
+            // impostando il namespace e l'operazione da eseguire
+            SoapObject soapObject = new SoapObject(NAMESPACE, METHOD_NAME_SQRT);
+
+            // preparazione delle proprietà/parametri dell'operazione
+            PropertyInfo propertyInfo = new PropertyInfo();
+
+            // FORMA ESTESA: aggiunta di un parametro con nome PARAMETER_NAME_ADD1 di tipo int
+            propertyInfo.setName(PARAMETER_NAME_SQRT1);
+            propertyInfo.setValue(params[1]);
+            propertyInfo.setType(Double.class);
+            soapObject.addProperty(propertyInfo);
 
             Log.i("com.example.samplews", "Request Value -> " + soapObject.toString());
             // creazione della busta SOAP da inviare

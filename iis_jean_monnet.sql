@@ -36,10 +36,10 @@ CREATE TABLE `operazioni` (
 --
 
 INSERT INTO `operazioni` (`id`, `nome`) VALUES
-(1, 'più'),
-(2, 'meno'),
-(3, 'per'),
-(4, 'diviso'),
+(1, 'somma'),
+(2, 'sottrazione'),
+(3, 'moltiplicazione'),
+(4, 'divisione'),
 (5, 'radice quadrata');
 
 -- --------------------------------------------------------

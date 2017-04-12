@@ -36,7 +36,7 @@
             android:textSize="24sp" />
 
         <Button
-            android:text="ESEGUI OPERAZIONE (somma)"
+            android:text="ESEGUI OPERAZIONE"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonEsegui" />

@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
     private TextView textViewRisultato;
     private Spinner spinnerOperazione;
     private Button buttonEsegui;
+    private String opMath;
 
     // gestore degli elementi presenti nello spinner
     private static ArrayAdapter<String> dataAdapter;
@@ -45,6 +46,7 @@ public class MainActivity extends Activity {
         editTextNumero2 = (EditText) findViewById(R.id.editTextNumero2);
         textViewRisultato = (TextView) findViewById(R.id.textViewRisultato);
         spinnerOperazione = (Spinner) findViewById(R.id.spinnerOperazione);
+        opMath = " ";
 
 
         // https://www.mkyong.com/android/android-spinner-drop-down-list-example/
@@ -80,7 +82,10 @@ public class MainActivity extends Activity {
                 // richiamo il thread di tipo AsyncTask chiedendo l'esecuzione del web service
                 // primo parametro: identificatore dell'operazione da richiamare
                 // secondo e terzo parametro i valori numerici da inviare
-                callWs.execute(CallWebService.METHOD_NAME_ADD, editTextNumero1.getText().toString(), editTextNumero2.getText().toString());
+                if (opMath.equals(CallWebService.METHOD_NAME_ADD))
+                    callWs.execute(CallWebService.METHOD_NAME_ADD, editTextNumero1.getText().toString(), editTextNumero2.getText().toString());
+                else if (opMath.equals(CallWebService.METHOD_NAME_SQRT))
+                    callWs.execute(CallWebService.METHOD_NAME_SQRT, editTextNumero1.getText().toString());
             }
         });
 
@@ -112,8 +117,20 @@ public class MainActivity extends Activity {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             String str = parent.getItemAtPosition(pos).toString();
 
-            // visualizzo l'elemento selezionato
-            Toast.makeText(MainActivity.this, "onItemSelected: " + str, Toast.LENGTH_SHORT).show();
+            if (str.equals("somma")) {
+                opMath = CallWebService.METHOD_NAME_ADD;
+                buttonEsegui.setEnabled(true);
+            }
+            else if (str.equals("radice quadrata")) {
+                opMath = CallWebService.METHOD_NAME_SQRT;
+                buttonEsegui.setEnabled(true);
+            }
+            else {
+                opMath = " ";
+                buttonEsegui.setEnabled(false);
+                // visualizzo messaggio di errore
+                Toast.makeText(MainActivity.this, "l'operazione " + str + "non è ancora disponibile.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         // http://stackoverflow.com/questions/16439463/why-is-onnothingselected-method-needed-in-spinner-listener
